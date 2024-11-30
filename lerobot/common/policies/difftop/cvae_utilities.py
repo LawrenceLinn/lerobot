@@ -44,12 +44,14 @@ class StateEncoder(nn.Module):
 
     def forward(self, obs, state):
         # obs, state = obs
-        normalized_obs = (obs - self.img_mean) / self.img_std
-        with torch.inference_mode():
-            img_emb = self.obs_encoder.forward_features(normalized_obs)
-        img_emb = img_emb.view(img_emb.size(0), -1)
-        normalized_state = state/512 * 2 - 1
-        state = torch.cat((img_emb, normalized_state), dim=-1)
+        # normalized_obs = (obs - self.img_mean) / self.img_std
+        with torch.no_grad():
+        # with self.obs_encoder.eval():
+            self.obs_encoder.eval()
+            img_emb = self.obs_encoder.forward_features(obs)
+        img_emb = img_emb.view(img_emb.size(0), -1).detach().clone()
+        # normalized_state = state/512 * 2 - 1
+        state = torch.cat((img_emb, state), dim=-1)
         return self.network(state)
 
 # Action Encoder (ha)
