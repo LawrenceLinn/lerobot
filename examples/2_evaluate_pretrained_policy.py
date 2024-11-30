@@ -21,7 +21,7 @@ output_directory.mkdir(parents=True, exist_ok=True)
 # Download the diffusion policy for pusht environment
 pretrained_policy_path = Path(snapshot_download("lerobot/diffusion_pusht"))
 # OR uncomment the following to evaluate a policy from the local outputs/train folder.
-# pretrained_policy_path = Path("outputs/train/example_pusht_diffusion")
+# pretrained_policy_path = Path("outputs/train/2024-11-26/18-20-16_pusht_diffusion_default")
 
 policy = DiffusionPolicy.from_pretrained(pretrained_policy_path)
 policy.eval()
@@ -85,7 +85,7 @@ while not done:
         "observation.state": state,
         "observation.image": image,
     }
-
+    
     # Predict the next action with respect to the current observation
     with torch.inference_mode():
         action = policy.select_action(observation)
