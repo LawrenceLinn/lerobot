@@ -38,8 +38,8 @@ class StateEncoder(nn.Module):
         #     transforms.ToTensor(),
         #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         # ])
-        self.img_mean = torch.tensor([0.485, 0.456, 0.406]).view(1, 3, 1, 1).to("mps")#.cuda()
-        self.img_std = torch.tensor([0.229, 0.224, 0.225]).view(1, 3, 1, 1).to("mps")#.cuda()
+        self.img_mean = torch.tensor([0.485, 0.456, 0.406]).view(1, 3, 1, 1).cuda()
+        self.img_std = torch.tensor([0.229, 0.224, 0.225]).view(1, 3, 1, 1).cuda()
 
         self.network = nn.Sequential(
             nn.Linear(state_dim, 256),
@@ -106,7 +106,7 @@ class RewardDecoder(nn.Module):
             nn.Linear(512, 512),
             nn.ELU(),
             nn.Linear(512, 1),
-            # nn.Tanh()
+            nn.Tanh()
         )
 
     def forward(self, zs, za, z):
